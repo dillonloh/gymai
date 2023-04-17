@@ -64,6 +64,11 @@ for frame_idx in range(num_frames):
         movenet, image[frame_idx, :, :, :], crop_region,
         crop_size=[input_size, input_size], interpreter=interpreter)
 
+    output_images.append(draw_prediction_on_image(
+        image[frame_idx, :, :, :].numpy().astype(np.int32),
+        keypoints_with_scores, crop_region=None,
+        close_figure=True, output_image_height=300, depth_flag=depth_flag))
+
     crop_region = determine_crop_region(
       keypoints_with_scores, image_height, image_width)
 
@@ -72,11 +77,6 @@ for frame_idx in range(num_frames):
 
     elif CURRENT_MOVEMENT == 'bench':
         depth_flag = True if check_bench_depth(keypoints_with_scores) else depth_flag
-
-    output_images.append(draw_prediction_on_image(
-        image[frame_idx, :, :, :].numpy().astype(np.int32),
-        keypoints_with_scores, crop_region=None,
-        close_figure=True, output_image_height=300, depth_flag=depth_flag))
 
 print('\n')
 if depth_flag == True:

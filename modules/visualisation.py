@@ -122,17 +122,15 @@ def draw_prediction_on_image(
     image_from_plot = np.frombuffer(fig.canvas.tostring_rgb(), dtype=np.uint8)
     image_from_plot = image_from_plot.reshape(
         fig.canvas.get_width_height()[::-1] + (3,))
-    
     plt.close(fig)
     if output_image_height is not None:
         output_image_width = int(output_image_height / height * width)
         image_from_plot = cv2.resize(
             image_from_plot, dsize=(output_image_width, output_image_height),
             interpolation=cv2.INTER_CUBIC)
-
+            
     if depth_flag:
-        # ic(image_from_plot.shape[0], image_from_plot.shape[1])
-        image_from_plot = cv2.putText(image_from_plot, 'Good Depth Hit', (int(image_from_plot.shape[0]/10), int(image_from_plot.shape[1]/10)), cv2.FONT_HERSHEY_SIMPLEX, 2, 255)
+       image_from_plot = cv2.putText(image_from_plot, 'Good Depth Hit', (int(image_from_plot.shape[0]/10), int(image_from_plot.shape[1]/10)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1, cv2.LINE_AA)
 
     return image_from_plot
 
