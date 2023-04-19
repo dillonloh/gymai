@@ -130,10 +130,10 @@ def draw_prediction_on_image(
             interpolation=cv2.INTER_CUBIC)
     
     if depth_flag and current_depth_flag:
-        image_from_plot = cv2.putText(image_from_plot, 'Currently good depth', (int(image_from_plot.shape[0]/10), int(image_from_plot.shape[1]/10)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1, cv2.LINE_AA)
+        image_from_plot = cv2.putText(image_from_plot, 'Good current depth', (int(image_from_plot.shape[0]/10), int(image_from_plot.shape[1]/10)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1, cv2.LINE_AA)
         
     elif depth_flag and not current_depth_flag:
-        image_from_plot = cv2.putText(image_from_plot, 'Good depth has been hit', (int(image_from_plot.shape[0]/10), int(image_from_plot.shape[1]/10)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1, cv2.LINE_AA)
+        image_from_plot = cv2.putText(image_from_plot, 'Good depth hit', (int(image_from_plot.shape[0]/10), int(image_from_plot.shape[1]/10)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1, cv2.LINE_AA)
         
     elif not depth_flag and not current_depth_flag:
         image_from_plot = cv2.putText(image_from_plot, 'Insufficient depth', (int(image_from_plot.shape[0]/10), int(image_from_plot.shape[1]/10)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1, cv2.LINE_AA)

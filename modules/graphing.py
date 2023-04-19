@@ -39,7 +39,7 @@ class DepthPlot:
             self.keypoints[name].append(preprocess_keypoint(keypoints_with_scores[0][0][id][:2]))
 
 
-    def plot_depth(self):
+    def plot_depth(self, filename='test.mp4'):
 
         right_array = np.array(self.keypoints['right_hip'])[:, 1] - np.array(self.keypoints['right_knee'])[:, 1]
         left_array = np.array(self.keypoints['left_hip'])[:, 1] - np.array(self.keypoints['left_knee'])[:, 1]
@@ -50,5 +50,6 @@ class DepthPlot:
         plt.hlines(y=0, xmin=0, xmax=len(self.keypoints['right_hip']), label='Parallel Depth', color='gray', linestyle='dashed')
         plt.legend()
 
-        plt.title('Relative Depth of Hip against Knee')
+        plt.title('Relative Depth of Hip against Knee', fontsize=16)
+        plt.savefig(filename)
         plt.show()

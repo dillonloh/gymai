@@ -93,7 +93,7 @@ if depth_flag == True:
 else: 
     print("Insufficient Depth")
 
-depthplot.plot_depth()
+depthplot.plot_depth('inference/' + video_path.split('/')[1].replace('mp4', 'png'))
 
 output = np.stack(output_images, axis=0)
 to_video(output, fps=30, name='inference/'+video_path.split('/')[-1])
