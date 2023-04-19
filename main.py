@@ -19,6 +19,7 @@ from icecream import ic
 from modules.visualisation import *
 from modules.formcheck import *
 from modules.inference import *
+from modules.graphing import *
 
 # Initialize the TFLite interpreter
 interpreter = tf.lite.Interpreter(model_path="models/model.tflite")
@@ -27,7 +28,7 @@ input_size = 192
 
 
 # Load the input image.
-video_path = 'videos/squat_dillon.mp4'
+video_path = 'videos/squat_dillon2.mp4'
 CURRENT_MOVEMENT = 'squat' # 'squat' or 'bench'
 
 # Read the video from specified path
@@ -53,8 +54,11 @@ num_frames, image_height, image_width, _ = image.shape
 crop_region = init_crop_region(image_height, image_width)
 
 # Run model inference.
+current_depth_flag = False
 depth_flag = False
 output_images = []
+depthplot = DepthPlot(movement=CURRENT_MOVEMENT)
+
 for frame_idx in range(num_frames):
 
     # status bar
@@ -63,19 +67,23 @@ for frame_idx in range(num_frames):
     keypoints_with_scores = run_inference(
         movenet, image[frame_idx, :, :, :], crop_region,
         crop_size=[input_size, input_size], interpreter=interpreter)
-
+    # ic(keypoints_with_scores)
     output_images.append(draw_prediction_on_image(
         image[frame_idx, :, :, :].numpy().astype(np.int32),
         keypoints_with_scores, crop_region=None,
-        close_figure=True, output_image_height=300, depth_flag=depth_flag))
+        close_figure=True, output_image_height=300, current_depth_flag=current_depth_flag, depth_flag=depth_flag, movement=CURRENT_MOVEMENT))
 
     crop_region = determine_crop_region(
       keypoints_with_scores, image_height, image_width)
 
+    depthplot.add_keypoints(keypoints_with_scores=keypoints_with_scores)
+
     if CURRENT_MOVEMENT == 'squat':
+        current_depth_flag = check_squat_depth(keypoints_with_scores)
         depth_flag = True if check_squat_depth(keypoints_with_scores) else depth_flag
 
     elif CURRENT_MOVEMENT == 'bench':
+        current_depth_flag = check_bench_depth(keypoints_with_scores)
         depth_flag = True if check_bench_depth(keypoints_with_scores) else depth_flag
 
 print('\n')
@@ -84,6 +92,8 @@ if depth_flag == True:
 
 else: 
     print("Insufficient Depth")
+
+depthplot.plot_depth()
 
 output = np.stack(output_images, axis=0)
 to_video(output, fps=30, name='inference/'+video_path.split('/')[-1])

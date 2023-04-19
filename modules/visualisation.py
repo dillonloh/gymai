@@ -60,7 +60,7 @@ KEYPOINT_EDGE_INDS_TO_COLOR = {
 
 def draw_prediction_on_image(
     image, keypoints_with_scores, crop_region=None, close_figure=False,
-    output_image_height=None, depth_flag=False):
+    output_image_height=None, current_depth_flag=False, depth_flag=False, movement=None):
     """Draws the keypoint predictions on image.
 
     Args:
@@ -128,11 +128,18 @@ def draw_prediction_on_image(
         image_from_plot = cv2.resize(
             image_from_plot, dsize=(output_image_width, output_image_height),
             interpolation=cv2.INTER_CUBIC)
-            
-    if depth_flag:
-       image_from_plot = cv2.putText(image_from_plot, 'Good Depth Hit', (int(image_from_plot.shape[0]/10), int(image_from_plot.shape[1]/10)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1, cv2.LINE_AA)
+    
+    if depth_flag and current_depth_flag:
+        image_from_plot = cv2.putText(image_from_plot, 'Currently good depth', (int(image_from_plot.shape[0]/10), int(image_from_plot.shape[1]/10)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1, cv2.LINE_AA)
+        
+    elif depth_flag and not current_depth_flag:
+        image_from_plot = cv2.putText(image_from_plot, 'Good depth has been hit', (int(image_from_plot.shape[0]/10), int(image_from_plot.shape[1]/10)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1, cv2.LINE_AA)
+        
+    elif not depth_flag and not current_depth_flag:
+        image_from_plot = cv2.putText(image_from_plot, 'Insufficient depth', (int(image_from_plot.shape[0]/10), int(image_from_plot.shape[1]/10)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1, cv2.LINE_AA)
 
     return image_from_plot
+
 
 def _keypoints_and_edges_for_display(keypoints_with_scores,
                                      height,
@@ -180,6 +187,7 @@ def _keypoints_and_edges_for_display(keypoints_with_scores,
                 line_seg = np.array([[x_start, y_start], [x_end, y_end]])
                 keypoint_edges_all.append(line_seg)
                 edge_colors.append(color)
+
     if keypoints_all:
         keypoints_xy = np.concatenate(keypoints_all, axis=0)
     else:
