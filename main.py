@@ -28,7 +28,7 @@ input_size = 192
 
 
 # Load the input image.
-video_path = 'videos/squat_dillon2.mp4'
+video_path = 'videos/squat_dillon.mp4'
 CURRENT_MOVEMENT = 'squat' # 'squat' or 'bench'
 
 # Read the video from specified path
@@ -93,7 +93,9 @@ if depth_flag == True:
 else: 
     print("Insufficient Depth")
 
-depthplot.plot_depth('inference/' + video_path.split('/')[1].replace('mp4', 'png'))
+# depthplot.plot_depth('inference/' + video_path.split('/')[1].replace('mp4', 'png'))
+depthplot.plot_animation('inference/plot_' + video_path.split('/')[1].replace('mp4', 'mp4'))
 
 output = np.stack(output_images, axis=0)
+
 to_video(output, fps=30, name='inference/'+video_path.split('/')[-1])
