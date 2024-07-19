@@ -42,7 +42,7 @@ pip install -r requirements.txt
 
 ## Usage <a name="usage"></a>
 
-Once the work is ready for use, the instructions will be updated here.
+To try it out, simply place a video of you performing a squat movement into the videos folder, indicate the path to it in `main.py`, and run.
 
 ## Authors <a name="authors"></a>
 
