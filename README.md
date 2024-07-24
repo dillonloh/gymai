@@ -7,7 +7,13 @@
 </div>
 
 ---
+<div align="center">
 
+![exercise](https://github.com/user-attachments/assets/3eb33a6f-f3ae-4c13-ac9f-082eee01671a)
+
+</div>
+
+---
 ## Table of Contents
 * [About](#about)
 * [Getting Started](#getting_started)
